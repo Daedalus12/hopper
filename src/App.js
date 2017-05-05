@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import {HopSelector} from './HopSelector';
 import {hopData} from './HopData';
-import {calcPoints,  RadarChart} from './RadarChart';
+import {RadarChart} from './RadarChart';
 
 class App extends Component {
   constructor(){
@@ -18,7 +18,6 @@ class App extends Component {
   changeSelectedHop(i)
   {
     let activeHop = this.state.hops[i];
-    console.log("changeSelectedHop called with " + i);
     this.setState({currentHop: activeHop});
   }
 
@@ -48,12 +47,8 @@ class App extends Component {
           <h2>Chart</h2>
           <div>
             <RadarChart
-              circleRadius={3}
-              points={calcPoints(3, 200, 10)}
-              showVertexDots={true}
-              showVertexLines={true}
-              width={200}
-              height={200}
+              radius={398}
+              size={400}
             />
           </div>
         </div>

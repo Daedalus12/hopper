@@ -6,8 +6,6 @@ class HopItem extends Component {
   }
 
   render() {
-    console.log(this);
-
     let selectionState = "";
     if (this.props.i === this.props.hop.id) {
       selectionState = "selected";
