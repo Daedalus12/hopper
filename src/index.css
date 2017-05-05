@@ -12,14 +12,14 @@ body {
   width: 100vw;
 }
 
-.polygon {
+.axes {
   fill: none;
-  stroke: #00C2FF;
-  stroke-width: 2;
+  stroke: #696969;
+  stroke-width: 1;
 }
 
-.circle {
-  fill: #052338;
-  stroke: #FFD774;
-  stroke-width: 2;
+.wedge {
+  fill: #638025;
+  stroke: #000000;
+  stroke-width: 1;
 }

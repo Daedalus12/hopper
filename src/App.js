@@ -49,6 +49,22 @@ class App extends Component {
             <RadarChart
               radius={398}
               size={400}
+              vals={[
+                this.state.currentHop.characteristics.citrus,
+                this.state.currentHop.characteristics.tropicalFruit,
+                this.state.currentHop.characteristics.stoneFruit,
+                this.state.currentHop.characteristics.applePear,
+                this.state.currentHop.characteristics.melon,
+                this.state.currentHop.characteristics.berry,
+                this.state.currentHop.characteristics.floral,
+                this.state.currentHop.characteristics.spicyHerbal,
+                this.state.currentHop.characteristics.pine,
+                this.state.currentHop.characteristics.resinous,
+                this.state.currentHop.characteristics.grassy,
+                this.state.currentHop.characteristics.earthyWoody,
+                this.state.currentHop.characteristics.onionGarlic,
+                this.state.currentHop.characteristics.dankCatty,
+              ]}
             />
           </div>
         </div>

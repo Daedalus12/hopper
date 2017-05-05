@@ -33,7 +33,7 @@ const VertexLine = ({
       y1={centerY}
       x2={point[0]}
       y2={point[1]}
-      className='polygon'
+      className='axes'
     />
   )
 };
@@ -44,7 +44,27 @@ const Polygon = ({
   const pointsData = points.join(' ');
 
   return (
-    <polygon className='polygon' points={pointsData} />
+    <polygon className='axes' points={pointsData} />
+  )
+};
+
+const Wedge = ({diameter, size, i}) => {
+
+  const points = calcPoints(diameter, size);
+
+  const centerX = size/ 2;
+  const centerY = size/ 2;
+
+  const wedgePoints = [];
+  wedgePoints.push([centerX, centerY]);
+  wedgePoints.push(points[i]);
+  wedgePoints.push(points[i+1]);
+  wedgePoints.push([centerX, centerY]);
+
+  const pointsData = wedgePoints.join(' ');
+
+  return (
+    <polygon className='wedge' points={pointsData} />
   )
 };
 
@@ -74,6 +94,10 @@ class RadarChart extends Component {
         { outerPoints.map((point, i) =>
           <VertexLine key={i} point={point} size={this.props.size} />)
         }
+        { this.props.vals.map((key, index)=>
+            <Wedge diameter={key/5*radius} size={size} i={index}/>)
+        }
+
 
       </svg>
     );
