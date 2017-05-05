@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-const nWedges = 15;
+const nWedges = 14;
 
 const RAD = Math.PI / 180;
 const TWO_PI = Math.PI * 2;
@@ -12,7 +12,7 @@ const calcPoints = (diameter, size) => {
   const center = size/2;
   const radius = diameter/2;
 
-  for(let i = 0; i < nWedges; i++) {
+  for(let i = 0; i < nWedges+1; i++) {
     let x = radius * Math.cos(theta * (i+0.5) + angle) + center;
     let y = radius * Math.sin(theta * (i+0.5) + angle) + center;
     points.push([x, y]);
@@ -54,14 +54,22 @@ class Wedge extends Component {
     this.state = {
       diameterDestination: props.diameter,
       diameter: 0,
-      increment: 4,
+      increment: this.calcIncrement(0, props.diameter),
     };
 
     this.animateWedge = null;
   }
 
+  calcIncrement(d1, d2)
+  {
+    return Math.abs(d2- d1)/15;
+  }
+
   componentWillReceiveProps(nextProps) {
-    this.setState({ diameterDestination: nextProps.diameter });
+    this.setState({
+      diameterDestination: nextProps.diameter,
+      increment: this.calcIncrement(nextProps.diameter, this.state.diameter),
+    });
 
   }
 
