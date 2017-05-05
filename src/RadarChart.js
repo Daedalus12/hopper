@@ -123,7 +123,7 @@ class Wedge extends Component {
       <polygon className='wedge' points={pointsData} />
     );
   }
-};
+}
 
 class RadarChart extends Component {
   render(){
@@ -142,7 +142,7 @@ class RadarChart extends Component {
 
     return (
       <svg
-        className='Svg'
+        className='Chart'
         viewBox={`0 0 ${this.props.size} ${this.props.size}`}
         xmlns='http://www.w3.org/2000/svg'
       >

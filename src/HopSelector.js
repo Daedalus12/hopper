@@ -6,9 +6,9 @@ class HopItem extends Component {
   }
 
   render() {
-    let selectionState = "";
+    let selectionState = "list-group-item";
     if (this.props.i === this.props.hop.id) {
-      selectionState = "selected";
+      selectionState += " active";
     }
 
     return (
@@ -24,7 +24,7 @@ class HopSelector extends Component {
     let cb = this.props.changeSelection;
     let i = this.props.selectedHopId;
     return (
-      <ul >
+      <ul class="list-group">
         {this.props.hops.map(function(hop, index) {return <HopItem key={index} hop={hop} cb={cb} i={i}/>})}
       </ul>
     );
