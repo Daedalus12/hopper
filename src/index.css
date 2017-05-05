@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.Chart {
+  background: #052338;
+  box-sizing: border-box;
+  height: 82vh;
+  padding: 5%;
+  width: 100vw;
+}
+
+.polygon {
+  fill: none;
+  stroke: #00C2FF;
+  stroke-width: 2;
+}
+
+.circle {
+  fill: #052338;
+  stroke: #FFD774;
+  stroke-width: 2;
+}
