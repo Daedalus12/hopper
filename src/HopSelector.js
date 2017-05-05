@@ -25,7 +25,7 @@ class HopSelector extends Component {
     let i = this.props.selectedHopId;
     return (
       <ul >
-        {this.props.hops.map(function(hop) {return <HopItem hop={hop} cb={cb} i={i}/>})}
+        {this.props.hops.map(function(hop, index) {return <HopItem key={index} hop={hop} cb={cb} i={i}/>})}
       </ul>
     );
   }

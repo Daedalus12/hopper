@@ -38,9 +38,7 @@ const VertexLine = ({
   )
 };
 
-const Polygon = ({
-                   points,
-                 }) => {
+const Polygon = ({ points }) => {
   const pointsData = points.join(' ');
 
   return (
@@ -48,24 +46,75 @@ const Polygon = ({
   )
 };
 
-const Wedge = ({diameter, size, i}) => {
+class Wedge extends Component {
+  constructor (props) {
+    super();
 
-  const points = calcPoints(diameter, size);
+    console.log('constructing');
+    this.state = {
+      diameterDestination: props.diameter,
+      diameter: 0,
+      increment: 4,
+    };
 
-  const centerX = size/ 2;
-  const centerY = size/ 2;
+    this.animateWedge = null;
+  }
 
-  const wedgePoints = [];
-  wedgePoints.push([centerX, centerY]);
-  wedgePoints.push(points[i]);
-  wedgePoints.push(points[i+1]);
-  wedgePoints.push([centerX, centerY]);
+  componentWillReceiveProps(nextProps) {
+    this.setState({ diameterDestination: nextProps.diameter });
 
-  const pointsData = wedgePoints.join(' ');
+  }
 
-  return (
-    <polygon className='wedge' points={pointsData} />
-  )
+  increment() {
+    // Kill the interval if we've reached the destination
+    if (this.state.diameterDestination === this.state.diameter) {
+      clearInterval(this.animateWedge);
+      return this.animateWedge = null;
+    }
+
+    if (this.state.diameter < this.state.diameterDestination) {
+      // Kill jitter
+      if (this.state.diameterDestination - this.state.diameter < this.state.increment) {
+        return this.setState({ diameter: this.state.diameterDestination });
+      } else {
+        // Increment
+        return this.setState({ diameter: this.state.diameter + this.state.increment });
+      }
+    } else {
+      // Kill jitter
+      if (this.state.diameter - this.state.diameterDestination < this.state.increment) {
+        return this.setState({ diameter: this.state.diameterDestination });
+      } else {
+        // Decrement
+        return this.setState({ diameter: this.state.diameter - this.state.increment });
+      }
+    }
+  }
+
+  render() {
+    if (this.state.diameter !== this.state.diameterDestination && !this.animateWedge) {
+      this.animateWedge = setInterval(() => {
+        this.increment();
+      }, 10);
+    }
+
+    const points = calcPoints(this.state.diameter, this.props.size);
+
+    const centerX = this.props.size/ 2;
+    const centerY = this.props.size/ 2;
+
+    const wedgePoints = [];
+    wedgePoints.push([centerX, centerY]);
+    wedgePoints.push(points[this.props.i]);
+    wedgePoints.push(points[this.props.i+1]);
+    wedgePoints.push([centerX, centerY]);
+
+    const pointsData = wedgePoints.join(' ');
+
+    return (
+      <polygon className='wedge' points={pointsData} />
+    );
+  }
 };
 
 class RadarChart extends Component {
@@ -89,13 +138,13 @@ class RadarChart extends Component {
         viewBox={`0 0 ${this.props.size} ${this.props.size}`}
         xmlns='http://www.w3.org/2000/svg'
       >
-        {tickPoints.map((points)=> <Polygon points={points}/>)}
+        {tickPoints.map((points, index)=> <Polygon key={index} points={points}/>)}
 
         { outerPoints.map((point, i) =>
           <VertexLine key={i} point={point} size={this.props.size} />)
         }
         { this.props.vals.map((key, index)=>
-            <Wedge diameter={key/5*radius} size={size} i={index}/>)
+            <Wedge key={index} diameter={key/5*radius} size={size} i={index}/>)
         }
 
 
