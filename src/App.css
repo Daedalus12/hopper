@@ -2,7 +2,7 @@
 }
 .App-header {
   text-align: center;
-  background-color: #468c0c;
+  background-color: #000000;
   height: 50px;
   padding: 20px;
   color: white;
@@ -20,6 +20,10 @@
 .Hop-names li{
   border: solid;
   border-color: black;
+}
+
+.selected{
+  background: goldenrod;
 }
 
 .App-intro {
