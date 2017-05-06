@@ -2,10 +2,21 @@ const hopData = [
   {
     id: 0,
     name: "Willamette",
-    alphaMin: 4.5,
-    alphaMax: 6.5,
-    betaMin: 3.0,
-    betaMax: 3.5,
+    basics:
+      {
+        alpha: [4.5, 6.5],
+        beta: [3.0, 3.5],
+        cohumulone: [28, 32],
+        totalOil: [0.6, 1.6],
+        myrcene: [22, 32],
+        humulene: [31, 35],
+        caryophyllene: [12, 14],
+        farnesene: [7, 10],
+        linalool: [0.4, 0.7],
+        geraniol: [0.1, 0.3],
+        betaPinene: [0.3, 0.5],
+        parentage: "Triploid seedling of English Fuggle",
+      },
     characteristics:
       {
         citrus: 1.3,
@@ -27,10 +38,21 @@ const hopData = [
   {
     id: 1,
     name: "Bravo",
-    alphaMin: 15.0,
-    alphaMax: 18.0,
-    betaMin: 3.5,
-    betaMax: 5.5,
+    basics:
+      {
+        alpha: [15, 18],
+        beta: [3.5, 5.5],
+        cohumulone: [28, 35],
+        totalOil: [2.3, 3.5],
+        myrcene: [55, 60],
+        humulene: [8, 11],
+        caryophyllene: [6, 8],
+        farnesene: [0, 1],
+        linalool: [0.4, 0.6],
+        geraniol: [0.7, 0.9],
+        betaPinene: [0.8, 1],
+        parentage: "Zeus, 98004, USDA 19058m",
+      },
     characteristics:
       {
         citrus: 4.4,
@@ -52,10 +74,21 @@ const hopData = [
   {
     id: 2,
     name: "Loral",
-    alphaMin: 11.3,
-    alphaMax: 12.2,
-    betaMin: 4.9,
-    betaMax: 5.3,
+    basics:
+      {
+        alpha: [11.3, 12.2],
+        beta: [4.9, 5.3],
+        cohumulone: [21, 24],
+        totalOil: [1.8, 2.9],
+        myrcene: [52, 58],
+        humulene: [17.8, 17.9],
+        caryophyllene: [5, 5.7],
+        farnesene: [0, 1],
+        linalool: [1, 1.1],
+        geraniol: [0.2, 0.3],
+        betaPinene: [0.6, 7],
+        parentage: "Glacier (mother) and son of the U.S. developed Nugget variety (father)",
+      },
     characteristics:
       {
         citrus: 3.2,
@@ -77,10 +110,21 @@ const hopData = [
   {
     id: 3,
     name: "Bru-1",
-    alphaMin: 13.0,
-    alphaMax: 15.0,
-    betaMin: 8.0,
-    betaMax: 10.0,
+    basics:
+      {
+        alpha: [13.0, 15.0],
+        beta: [8.0, 10],
+        cohumulone: [35, 37],
+        totalOil: [1.5, 2],
+        myrcene: [50, 55],
+        humulene: [9, 11],
+        caryophyllene: [7, 8],
+        farnesene: [0, 1],
+        linalool: null,
+        geraniol: null,
+        betaPinene: null,
+        parentage: null,
+      },
     characteristics:
       {
         citrus: 3.6,

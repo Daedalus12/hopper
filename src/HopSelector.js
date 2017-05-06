@@ -24,7 +24,7 @@ class HopSelector extends Component {
     let cb = this.props.changeSelection;
     let i = this.props.selectedHopId;
     return (
-      <ul class="list-group">
+      <ul className="list-group">
         {this.props.hops.map(function(hop, index) {return <HopItem key={index} hop={hop} cb={cb} i={i}/>})}
       </ul>
     );

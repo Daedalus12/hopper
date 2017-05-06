@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {HopSelector} from './HopSelector';
 import {hopData} from './HopData';
 import {RadarChart} from './RadarChart';
+import {HopBasicInfo} from './HopBasicInfo';
 
 class App extends Component {
   constructor(){
@@ -38,10 +39,7 @@ class App extends Component {
 
           <div className="col-md-3">
             <h3>Basic Info:</h3>
-            <p>
-              Alpha: {this.state.currentHop.alphaMin} – {this.state.currentHop.alphaMax}% <br/>
-              Beta: {this.state.currentHop.betaMin} – {this.state.currentHop.betaMax}%
-            </p>
+              <HopBasicInfo basics={this.state.currentHop.basics}/>
           </div>
 
           <div className="col-md-6">
