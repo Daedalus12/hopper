@@ -37,14 +37,9 @@ class App extends Component {
             <HopSelector hops={this.state.hops} changeSelection={this.changeSelectedHop} selectedHopId={this.state.currentHop.id}/>
           </div>
 
-          <div className="col-md-3">
-            <h3>Basic Info:</h3>
-              <HopBasicInfo basics={this.state.currentHop.basics}/>
-          </div>
-
           <div className="col-md-6">
             <h3>Characteristics:</h3>
-              <RadarChart
+            <RadarChart
                 size={300}
                 vals={[
                   this.state.currentHop.characteristics.citrus,
@@ -62,8 +57,14 @@ class App extends Component {
                   this.state.currentHop.characteristics.onionGarlic,
                   this.state.currentHop.characteristics.dankCatty,
                 ]}
-              />
+            />
           </div>
+
+          <div className="col-md-3">
+            <h3>Basic Info:</h3>
+              <HopBasicInfo basics={this.state.currentHop.basics}/>
+          </div>
+
         </div>
       </div>
     );
