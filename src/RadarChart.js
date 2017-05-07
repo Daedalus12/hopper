@@ -20,6 +20,29 @@ const calcPoints = (diameter, size) => {
   return points;
 };
 
+class Label extends Component {
+
+  getTransformString(){
+    let translateString1 = "translate(0 -"+  this.props.size/2 + ")";
+    let translateString2 = "translate(" + this.props.size/2 + " " + this.props.size/2 + ")";
+    let rotateString = "rotate(" + 360/nWedges*(1+this.props.i) + ")";
+    return translateString2 + rotateString + translateString1;
+  }
+
+  render() {
+    return(
+        <text transform={this.getTransformString()} textAnchor="middle">
+          {this.props.text}
+        </text>
+    )
+  }
+
+}
+
+// const centerX = size/ 2;
+//   const centerY = size/ 2;
+
+
 const VertexLine = ({
                       point,
                       size
@@ -54,13 +77,13 @@ class Wedge extends Component {
     this.state = {
       diameterDestination: props.diameter,
       diameter: 0,
-      increment: this.calcIncrement(0, props.diameter),
+      increment: Wedge.calcIncrement(0, props.diameter),
     };
 
     this.animateWedge = null;
   }
 
-  calcIncrement(d1, d2)
+  static calcIncrement(d1, d2)
   {
     return Math.abs(d2- d1)/15;
   }
@@ -68,7 +91,7 @@ class Wedge extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       diameterDestination: nextProps.diameter,
-      increment: this.calcIncrement(nextProps.diameter, this.state.diameter),
+      increment: Wedge.calcIncrement(nextProps.diameter, this.state.diameter),
     });
 
   }
@@ -154,6 +177,20 @@ class RadarChart extends Component {
         { this.props.vals.map((key, index)=>
             <Wedge key={index} diameter={key/5*radius} size={size} i={index}/>)
         }
+        <Label text="Citrus" size={this.props.size} i={0}/>
+        <Label text="Tropical Fruit" size={this.props.size} i={1}/>
+        <Label text="Stone Fruit" size={this.props.size} i={2}/>
+        <Label text="Apple/Pear" size={this.props.size} i={3}/>
+        <Label text="Melon" size={this.props.size} i={4}/>
+        <Label text="Berry" size={this.props.size} i={5}/>
+        <Label text="Floral" size={this.props.size} i={6}/>
+        <Label text="Spicy/Herbal" size={this.props.size} i={7}/>
+        <Label text="Pine" size={this.props.size} i={8}/>
+        <Label text="Resinous" size={this.props.size} i={9}/>
+        <Label text="Grassy" size={this.props.size} i={10}/>
+        <Label text="Earthy/Woody" size={this.props.size} i={11}/>
+        <Label text="Onion/Garlic" size={this.props.size} i={12}/>
+        <Label text="Dank/Catty" size={this.props.size} i={13}/>
 
 
       </svg>
