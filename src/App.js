@@ -45,8 +45,7 @@ class App extends Component {
           <div className="col-md-6">
             <h3>Characteristics:</h3>
               <RadarChart
-                radius={398}
-                size={400}
+                size={300}
                 vals={[
                   this.state.currentHop.characteristics.citrus,
                   this.state.currentHop.characteristics.tropicalFruit,

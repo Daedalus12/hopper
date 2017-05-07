@@ -7,14 +7,12 @@ const TWO_PI = Math.PI * 2;
 const theta = TWO_PI / nWedges;
 const angle = RAD * -90;
 
-const calcPoints = (diameter, size) => {
+const calcPoints = (radius) => {
   const points = [];
-  const center = size/2;
-  const radius = diameter/2;
 
   for(let i = 0; i < nWedges+1; i++) {
-    let x = radius * Math.cos(theta * (i+0.5) + angle) + center;
-    let y = radius * Math.sin(theta * (i+0.5) + angle) + center;
+    let x = radius * Math.cos(theta * (i+0.5) + angle);
+    let y = radius * Math.sin(theta * (i+0.5) + angle);
     points.push([x, y]);
   }
   return points;
@@ -23,15 +21,20 @@ const calcPoints = (diameter, size) => {
 class Label extends Component {
 
   getTransformString(){
-    let translateString1 = "translate(0 -"+  this.props.size/2 + ")";
-    let translateString2 = "translate(" + this.props.size/2 + " " + this.props.size/2 + ")";
-    let rotateString = "rotate(" + 360/nWedges*(1+this.props.i) + ")";
-    return translateString2 + rotateString + translateString1;
+    let angle = 360/nWedges*this.props.i;
+    let flipString = 90 < angle && angle < 270 ? "rotate(180) translate(0 6)" : "";
+    let translateString = "translate(0 -"+  this.props.radius + ")";
+    let rotateString = "rotate(" + angle + ")";
+
+    return rotateString + translateString + flipString;
   }
 
   render() {
     return(
-        <text transform={this.getTransformString()} textAnchor="middle">
+        <text transform={this.getTransformString()}
+              textAnchor="middle"
+              className="radarLabel"
+        >
           {this.props.text}
         </text>
     )
@@ -39,33 +42,23 @@ class Label extends Component {
 
 }
 
-// const centerX = size/ 2;
-//   const centerY = size/ 2;
-
-
-const VertexLine = ({
-                      point,
-                      size
-                    }) => {
-  const centerX = size/ 2;
-  const centerY = size/ 2;
-
+const VertexLine = ({point}) => {
   return(
     <line
-      x1={centerX}
-      y1={centerY}
+      x1={0}
+      y1={0}
       x2={point[0]}
       y2={point[1]}
-      className='axes'
+      className='tick'
     />
   )
 };
 
-const Polygon = ({ points }) => {
+const Axes = ({ points }) => {
   const pointsData = points.join(' ');
 
   return (
-    <polygon className='axes' points={pointsData} />
+      <polygon className='tick' points={pointsData} />
   )
 };
 
@@ -73,7 +66,6 @@ class Wedge extends Component {
   constructor (props) {
     super();
 
-    console.log('constructing');
     this.state = {
       diameterDestination: props.diameter,
       diameter: 0,
@@ -81,6 +73,11 @@ class Wedge extends Component {
     };
 
     this.animateWedge = null;
+  }
+
+  getTransformString(){
+    let angle = 360/nWedges*this.props.i;
+    return "rotate(" + angle + ")";
   }
 
   static calcIncrement(d1, d2)
@@ -122,6 +119,19 @@ class Wedge extends Component {
     }
   }
 
+  calcPoints(radius) {
+
+    let x = radius * Math.cos(theta/2 + angle);
+    let y = radius * Math.sin(theta/2 + angle);
+
+    return [
+        [0,0],
+        [-x, y],
+        [x, y],
+        [0, 0],
+    ];
+  }
+
   render() {
     if (this.state.diameter !== this.state.diameterDestination && !this.animateWedge) {
       this.animateWedge = setInterval(() => {
@@ -129,68 +139,65 @@ class Wedge extends Component {
       }, 10);
     }
 
-    const points = calcPoints(this.state.diameter, this.props.size);
-
-    const centerX = this.props.size/ 2;
-    const centerY = this.props.size/ 2;
-
-    const wedgePoints = [];
-    wedgePoints.push([centerX, centerY]);
-    wedgePoints.push(points[this.props.i]);
-    wedgePoints.push(points[this.props.i+1]);
-    wedgePoints.push([centerX, centerY]);
-
-    const pointsData = wedgePoints.join(' ');
+    const pointsData = this.calcPoints(this.state.diameter).join(' ');
 
     return (
-      <polygon className='wedge' points={pointsData} />
+      <polygon className='wedge' points={pointsData} transform={this.getTransformString()} />
     );
   }
 }
 
 class RadarChart extends Component {
-  render(){
+  constructor(props){
+    super(props);
+    this.state = {
+      ticks: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
+      radius: (props.size/2) - 20,
+    }
+  }
 
-    let ticks = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0];
-    let radius = this.props.radius;
-    let size = this.props.size;
+  render(){
 
     let tickPoints = [];
 
-    for (let i=0; i < ticks.length; ++i)
+    for (let i=0; i < this.state.ticks.length; ++i)
     {
-      tickPoints.push(calcPoints(ticks[i]/5.0*radius, size));
+      tickPoints.push(calcPoints(this.state.ticks[i]/5.0*this.state.radius, this.props.size));
     }
+
     let outerPoints = tickPoints[tickPoints.length - 1];
 
     return (
       <svg
-        className='Chart'
-        viewBox={`0 0 ${this.props.size} ${this.props.size}`}
-        xmlns='http://www.w3.org/2000/svg'
+          width={this.props.size}
+          height={this.props.size}
+          className='Chart'
+          viewBox={"-" + this.props.size/2 + " -" + this.props.size/2 + " " + this.props.size + " " + this.props.size}
+          xmlns='http://www.w3.org/2000/svg'
       >
-        {tickPoints.map((points, index)=> <Polygon key={index} points={points}/>)}
+
+        {tickPoints.map((points, index)=> <Axes key={index} points={points} class="tick"/>)}
 
         { outerPoints.map((point, i) =>
           <VertexLine key={i} point={point} size={this.props.size} />)
         }
         { this.props.vals.map((key, index)=>
-            <Wedge key={index} diameter={key/5*radius} size={size} i={index}/>)
+            <Wedge key={index} diameter={key/5*this.state.radius} i={index}/>)
         }
-        <Label text="Citrus" size={this.props.size} i={0}/>
-        <Label text="Tropical Fruit" size={this.props.size} i={1}/>
-        <Label text="Stone Fruit" size={this.props.size} i={2}/>
-        <Label text="Apple/Pear" size={this.props.size} i={3}/>
-        <Label text="Melon" size={this.props.size} i={4}/>
-        <Label text="Berry" size={this.props.size} i={5}/>
-        <Label text="Floral" size={this.props.size} i={6}/>
-        <Label text="Spicy/Herbal" size={this.props.size} i={7}/>
-        <Label text="Pine" size={this.props.size} i={8}/>
-        <Label text="Resinous" size={this.props.size} i={9}/>
-        <Label text="Grassy" size={this.props.size} i={10}/>
-        <Label text="Earthy/Woody" size={this.props.size} i={11}/>
-        <Label text="Onion/Garlic" size={this.props.size} i={12}/>
-        <Label text="Dank/Catty" size={this.props.size} i={13}/>
+        <Label text="Citrus" radius={this.state.radius} i={0}/>
+        <Label text="Tropical Fruit" radius={this.state.radius} i={1}/>
+        <Label text="Stone Fruit" radius={this.state.radius} i={2}/>
+        <Label text="Apple/Pear" radius={this.state.radius} i={3}/>
+        <Label text="Melon" radius={this.state.radius} i={4}/>
+        <Label text="Berry" radius={this.state.radius} i={5}/>
+        <Label text="Floral" radius={this.state.radius} i={6}/>
+        <Label text="Spicy/Herbal" radius={this.state.radius} i={7}/>
+        <Label text="Pine" radius={this.state.radius} i={8}/>
+        <Label text="Resinous" radius={this.state.radius} i={9}/>
+        <Label text="Grassy" radius={this.state.radius} i={10}/>
+        <Label text="Earthy/Woody" radius={this.state.radius} i={11}/>
+        <Label text="Onion/Garlic" radius={this.state.radius} i={12}/>
+        <Label text="Dank/Catty" radius={this.state.radius} i={13}/>
 
 
       </svg>

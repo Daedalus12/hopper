@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 
 class HopBasicInfo extends Component {
   render() {
-    console.log(this.props.basics.linalool);
-    console.log(this.props.basics.linalool === null);
-    console.log(this.props.basics.linalool === null ? "N/A" : "Stuff");
-
     return (
       <p>
         Alpha: {this.props.basics.alpha[0]} – {this.props.basics.alpha[1]}% <br/>
