@@ -121,13 +121,20 @@ class Wedge extends Component {
 
   calcPoints(radius) {
 
-    let x = radius * Math.cos(theta/2 + angle);
+    let x = radius * Math.cos(theta/2 + angle)*0.8;
     let y = radius * Math.sin(theta/2 + angle);
-
+    let x1 = x;
+    let x2 = x;
+    if (this.props.flip === true)
+    {
+      x2 = 0;
+    }else{
+      x1 = 0
+    }
     return [
         [0,0],
-        [-x, y],
-        [x, y],
+        [-x1, y],
+        [x2, y],
         [0, 0],
     ];
   }
@@ -142,7 +149,7 @@ class Wedge extends Component {
     const pointsData = this.calcPoints(this.state.diameter).join(' ');
 
     return (
-      <polygon className='wedge' points={pointsData} transform={this.getTransformString()} />
+      <polygon className={this.props.s} points={pointsData} transform={this.getTransformString()} />
     );
   }
 }
@@ -181,8 +188,11 @@ class RadarChart extends Component {
         { outerPoints.map((point, i) =>
           <VertexLine key={i} point={point} size={this.props.size} />)
         }
-        { this.props.vals.map((key, index)=>
-            <Wedge key={index} diameter={key/5*this.state.radius} i={index}/>)
+        { this.props.vals1.map((key, index)=>
+            <Wedge key={index} diameter={key/5*this.state.radius} i={index} flip={true} s="wedge"/>)
+        }
+        { this.props.vals2.map((key, index)=>
+          <Wedge key={index} diameter={key/5*this.state.radius} i={index} flip={false} s="wedge2"/>)
         }
         <Label text="Citrus" radius={this.state.radius} i={0}/>
         <Label text="Tropical Fruit" radius={this.state.radius} i={1}/>

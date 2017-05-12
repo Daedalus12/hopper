@@ -22,12 +22,12 @@ class App extends Component {
   }
   changeSelectedHop1(i)
   {
-    if (this.state.hops[i].id == this.state.hop2.id) return;
+    if (this.state.hops[i].id === this.state.hop2.id) return;
     this.setState({hop1: this.state.hops[i]});
   }
   changeSelectedHop2(i)
   {
-    if (this.state.hops[i].id == this.state.hop1.id) return;
+    if (this.state.hops[i].id === this.state.hop1.id) return;
     this.setState({hop2: this.state.hops[i]});
   }
 
@@ -56,11 +56,11 @@ class App extends Component {
           </div>
 
           <div className="col-md-8 col-xs-12">
-          <Tabs activeKey={this.state.activeTab} onSelect={this.handleTabSelect}>
+          <Tabs activeKey={this.state.activeTab} onSelect={this.handleTabSelect} id="Visualization Selector">
             <Tab eventKey={1} title="Aroma">
                 <RadarChart
                   size={300}
-                  vals={[
+                  vals1={[
                     this.state.hop1.characteristics.citrus,
                     this.state.hop1.characteristics.tropicalFruit,
                     this.state.hop1.characteristics.stoneFruit,
@@ -76,25 +76,22 @@ class App extends Component {
                     this.state.hop1.characteristics.onionGarlic,
                     this.state.hop1.characteristics.dankCatty,
                   ]}
-                />
-              <RadarChart
-                size={300}
-                vals={[
-                  this.state.hop2.characteristics.citrus,
-                  this.state.hop2.characteristics.tropicalFruit,
-                  this.state.hop2.characteristics.stoneFruit,
-                  this.state.hop2.characteristics.applePear,
-                  this.state.hop2.characteristics.melon,
-                  this.state.hop2.characteristics.berry,
-                  this.state.hop2.characteristics.floral,
-                  this.state.hop2.characteristics.spicyHerbal,
-                  this.state.hop2.characteristics.pine,
-                  this.state.hop2.characteristics.resinous,
-                  this.state.hop2.characteristics.grassy,
-                  this.state.hop2.characteristics.earthyWoody,
-                  this.state.hop2.characteristics.onionGarlic,
-                  this.state.hop2.characteristics.dankCatty,
-                ]}
+                  vals2={[
+                    this.state.hop2.characteristics.citrus,
+                    this.state.hop2.characteristics.tropicalFruit,
+                    this.state.hop2.characteristics.stoneFruit,
+                    this.state.hop2.characteristics.applePear,
+                    this.state.hop2.characteristics.melon,
+                    this.state.hop2.characteristics.berry,
+                    this.state.hop2.characteristics.floral,
+                    this.state.hop2.characteristics.spicyHerbal,
+                    this.state.hop2.characteristics.pine,
+                    this.state.hop2.characteristics.resinous,
+                    this.state.hop2.characteristics.grassy,
+                    this.state.hop2.characteristics.earthyWoody,
+                    this.state.hop2.characteristics.onionGarlic,
+                    this.state.hop2.characteristics.dankCatty,
+                  ]}
               />
 
             </Tab>
