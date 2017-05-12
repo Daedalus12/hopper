@@ -44,7 +44,7 @@ class App extends Component {
             <HopSelector hops={this.state.hops} changeSelection={this.changeSelectedHop} selectedHopId={this.state.currentHop.id}/>
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-6 col-xs-12">
           <Tabs activeKey={this.state.activeTab} onSelect={this.handleTabSelect}>
             <Tab eventKey={1} title="Aroma">
                 <RadarChart
