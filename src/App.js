@@ -11,16 +11,24 @@ class App extends Component {
     this.state =
       {
         hops: hopData,
-        currentHop: hopData[0],
+        hop1: hopData[0],
+        hop2: hopData[1],
         activeTab: 1,
       };
 
-    this.changeSelectedHop = this.changeSelectedHop.bind(this);
+    this.changeSelectedHop1 = this.changeSelectedHop1.bind(this);
+    this.changeSelectedHop2 = this.changeSelectedHop2.bind(this);
     this.handleTabSelect = this.handleTabSelect.bind(this);
   }
-  changeSelectedHop(i)
+  changeSelectedHop1(i)
   {
-    this.setState({currentHop: this.state.hops[i]});
+    if (this.state.hops[i].id == this.state.hop2.id) return;
+    this.setState({hop1: this.state.hops[i]});
+  }
+  changeSelectedHop2(i)
+  {
+    if (this.state.hops[i].id == this.state.hop1.id) return;
+    this.setState({hop2: this.state.hops[i]});
   }
 
   handleTabSelect(i)
@@ -40,36 +48,59 @@ class App extends Component {
         <br/>
 
         <div className="container-fluid">
-          <div className="col-md-2 col-md-offset-2 col-xs-12">
-            <HopSelector hops={this.state.hops} changeSelection={this.changeSelectedHop} selectedHopId={this.state.currentHop.id}/>
+          <div className="col-md-2 col-xs-6">
+            <HopSelector hops={this.state.hops} changeSelection={this.changeSelectedHop1} selectedHopId={this.state.hop1.id} disabledHop={this.state.hop2.id}/>
+          </div>
+          <div className="col-md-2 col-xs-6">
+            <HopSelector hops={this.state.hops} changeSelection={this.changeSelectedHop2} selectedHopId={this.state.hop2.id} disabledHop={this.state.hop1.id}/>
           </div>
 
-          <div className="col-md-6 col-xs-12">
+          <div className="col-md-8 col-xs-12">
           <Tabs activeKey={this.state.activeTab} onSelect={this.handleTabSelect}>
             <Tab eventKey={1} title="Aroma">
                 <RadarChart
                   size={300}
                   vals={[
-                    this.state.currentHop.characteristics.citrus,
-                    this.state.currentHop.characteristics.tropicalFruit,
-                    this.state.currentHop.characteristics.stoneFruit,
-                    this.state.currentHop.characteristics.applePear,
-                    this.state.currentHop.characteristics.melon,
-                    this.state.currentHop.characteristics.berry,
-                    this.state.currentHop.characteristics.floral,
-                    this.state.currentHop.characteristics.spicyHerbal,
-                    this.state.currentHop.characteristics.pine,
-                    this.state.currentHop.characteristics.resinous,
-                    this.state.currentHop.characteristics.grassy,
-                    this.state.currentHop.characteristics.earthyWoody,
-                    this.state.currentHop.characteristics.onionGarlic,
-                    this.state.currentHop.characteristics.dankCatty,
+                    this.state.hop1.characteristics.citrus,
+                    this.state.hop1.characteristics.tropicalFruit,
+                    this.state.hop1.characteristics.stoneFruit,
+                    this.state.hop1.characteristics.applePear,
+                    this.state.hop1.characteristics.melon,
+                    this.state.hop1.characteristics.berry,
+                    this.state.hop1.characteristics.floral,
+                    this.state.hop1.characteristics.spicyHerbal,
+                    this.state.hop1.characteristics.pine,
+                    this.state.hop1.characteristics.resinous,
+                    this.state.hop1.characteristics.grassy,
+                    this.state.hop1.characteristics.earthyWoody,
+                    this.state.hop1.characteristics.onionGarlic,
+                    this.state.hop1.characteristics.dankCatty,
                   ]}
                 />
+              <RadarChart
+                size={300}
+                vals={[
+                  this.state.hop2.characteristics.citrus,
+                  this.state.hop2.characteristics.tropicalFruit,
+                  this.state.hop2.characteristics.stoneFruit,
+                  this.state.hop2.characteristics.applePear,
+                  this.state.hop2.characteristics.melon,
+                  this.state.hop2.characteristics.berry,
+                  this.state.hop2.characteristics.floral,
+                  this.state.hop2.characteristics.spicyHerbal,
+                  this.state.hop2.characteristics.pine,
+                  this.state.hop2.characteristics.resinous,
+                  this.state.hop2.characteristics.grassy,
+                  this.state.hop2.characteristics.earthyWoody,
+                  this.state.hop2.characteristics.onionGarlic,
+                  this.state.hop2.characteristics.dankCatty,
+                ]}
+              />
+
             </Tab>
 
             <Tab eventKey={2} title="Basics">
-              <HopBasicInfo basics={this.state.currentHop.basics}/>
+              <HopBasicInfo basics={this.state.hop1.basics}/>
             </Tab>
           </Tabs>
           </div>
