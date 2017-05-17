@@ -1,27 +1,9 @@
-import React, {Component} from 'react';
-
-const nWedges = 14;
-
-const RAD = Math.PI / 180;
-const TWO_PI = Math.PI * 2;
-const theta = TWO_PI / nWedges;
-const angle = RAD * -90;
-
-const calcPoints = (radius) => {
-  const points = [];
-
-  for(let i = 0; i < nWedges+1; i++) {
-    let x = radius * Math.cos(theta * (i+0.5) + angle);
-    let y = radius * Math.sin(theta * (i+0.5) + angle);
-    points.push([x, y]);
-  }
-  return points;
-};
+import React, {Component} from "react";
 
 class Label extends Component {
 
   getTransformString(){
-    let angle = 360/nWedges*this.props.i;
+    let angle = 360 / this.props.nWedges * this.props.i;
     let flipString = 90 < angle && angle < 270 ? "rotate(180) translate(0 6)" : "";
     let translateString = "translate(0 -"+  this.props.radius + ")";
     let rotateString = "rotate(" + angle + ")";
@@ -76,8 +58,8 @@ class Wedge extends Component {
   }
 
   getTransformString(){
-    let angle = 360/nWedges*this.props.i;
-    return "rotate(" + angle + ")";
+    let angle = this.props.theta * this.props.i;
+    return "rotate(" + (180 + 180 / Math.PI * angle) + ")";
   }
 
   static calcIncrement(d1, d2)
@@ -121,21 +103,13 @@ class Wedge extends Component {
 
   calcPoints(radius) {
 
-    let x = radius * Math.cos(theta/2 + angle)*0.8;
-    let y = radius * Math.sin(theta/2 + angle);
-    let x1 = x;
-    let x2 = x;
-    if (this.props.flip === true)
-    {
-      x2 = 0;
-    }else{
-      x1 = 0
-    }
+    let x = radius * Math.sin(this.props.theta / 2) * this.props.width;
+    let y = radius * Math.cos(this.props.theta / 2);
     return [
-        [0,0],
-        [-x1, y],
-        [x2, y],
-        [0, 0],
+      [0, 0],
+      [-x, y],
+      [x, y],
+      [0, 0],
     ];
   }
 
@@ -160,7 +134,21 @@ class RadarChart extends Component {
     this.state = {
       ticks: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
       radius: (props.size/2) - 20,
+      nWedges: props.data.length,
+      theta: (Math.PI * 2) / props.data.length,
+      angle: -Math.PI / 2,
     }
+  }
+
+  calcPoints(radius) {
+    const points = [];
+
+    for (let i = 0; i < this.state.nWedges + 1; i++) {
+      let x = radius * Math.cos(this.state.theta * (i + 0.5) + this.state.angle);
+      let y = radius * Math.sin(this.state.theta * (i + 0.5) + this.state.angle);
+      points.push([x, y]);
+    }
+    return points;
   }
 
   render(){
@@ -169,7 +157,7 @@ class RadarChart extends Component {
 
     for (let i=0; i < this.state.ticks.length; ++i)
     {
-      tickPoints.push(calcPoints(this.state.ticks[i]/5.0*this.state.radius, this.props.size));
+      tickPoints.push(this.calcPoints(this.state.ticks[i] / 5.0 * this.state.radius, this.props.size));
     }
 
     let outerPoints = tickPoints[tickPoints.length - 1];
@@ -188,31 +176,35 @@ class RadarChart extends Component {
         { outerPoints.map((point, i) =>
           <VertexLine key={i} point={point} size={this.props.size} />)
         }
-        { this.props.vals1.map((key, index)=>
-            <Wedge key={index} diameter={key/5*this.state.radius} i={index} flip={true} s="wedge"/>)
+        { this.props.data.map((key, index)=>
+          <Wedge key={index}
+                 diameter={key.values[0] / 5 * this.state.radius}
+                 i={index}
+                 s="wedge"
+                 angle={this.state.angle}
+                 theta={this.state.theta}
+                 nWedges={this.state.nWedges}
+                 width={1}
+          />
+        )}
+        { this.props.data.map((key, index)=>
+          <Wedge key={index}
+                 diameter={key.values[1] / 5 * this.state.radius}
+                 i={index}
+                 s="wedge2"
+                 angle={this.state.angle}
+                 theta={this.state.theta}
+                 nWedges={this.state.nWedges}
+                 width={0.5}
+          />
+        )}
+        { this.props.data.map((key, index)=>
+          <Label text={key.name} radius={this.state.radius} i={index} nWedges={this.state.nWedges} key={index}/>)
         }
-        { this.props.vals2.map((key, index)=>
-          <Wedge key={index} diameter={key/5*this.state.radius} i={index} flip={false} s="wedge2"/>)
-        }
-        <Label text="Citrus" radius={this.state.radius} i={0}/>
-        <Label text="Tropical Fruit" radius={this.state.radius} i={1}/>
-        <Label text="Stone Fruit" radius={this.state.radius} i={2}/>
-        <Label text="Apple/Pear" radius={this.state.radius} i={3}/>
-        <Label text="Melon" radius={this.state.radius} i={4}/>
-        <Label text="Berry" radius={this.state.radius} i={5}/>
-        <Label text="Floral" radius={this.state.radius} i={6}/>
-        <Label text="Spicy/Herbal" radius={this.state.radius} i={7}/>
-        <Label text="Pine" radius={this.state.radius} i={8}/>
-        <Label text="Resinous" radius={this.state.radius} i={9}/>
-        <Label text="Grassy" radius={this.state.radius} i={10}/>
-        <Label text="Earthy/Woody" radius={this.state.radius} i={11}/>
-        <Label text="Onion/Garlic" radius={this.state.radius} i={12}/>
-        <Label text="Dank/Catty" radius={this.state.radius} i={13}/>
-
 
       </svg>
     );
   }
 }
 
-export {calcPoints, RadarChart};
+export {RadarChart};

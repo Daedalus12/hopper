@@ -16,9 +16,25 @@
   font-family: Lato, sans-serif;
 }
 
-li .list-group-item.active
-{
-  color: yellowgreen;
+@hop1: #6ec87e;
+@hop2: #c6c817;
+
+#hop1 {
+  background-color: @hop1;
+  border-color: black;
+}
+
+#hop2 {
+  background-color: @hop2;
+  border-color: black;
+}
+
+li.list-group-item.hop1.active, li.list-group-item.hop1.active:hover, li.list-group-item.hop1.active:focus {
+  #hop1;
+}
+
+li.list-group-item.hop2.active, li.list-group-item.hop2.active:hover, li.list-group-item.hop2.active:focus {
+  #hop2;
 }
 
 body {
@@ -34,13 +50,13 @@ body {
 }
 
 .wedge {
-  fill: #95c879;
+  fill: @hop1;
   stroke: #000000;
   stroke-width: 0.5;
 }
 
 .wedge2 {
-  fill: #bac844;
+  fill: @hop2;
   stroke: #000000;
   stroke-width: 0.5;
 }
