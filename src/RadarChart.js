@@ -16,6 +16,7 @@ class Label extends Component {
         <text transform={this.getTransformString()}
               textAnchor="middle"
               className="radarLabel"
+              key={this.props.i}
         >
           {this.props.text}
         </text>
@@ -45,29 +46,44 @@ const Axes = ({ points }) => {
 };
 
 class MultiWedge extends Component {
-  constructor(props) {
-    super();
 
-    this.state = {
-      diameterDestination: props.diameter,
-      diameter: 0,
-      increment: Wedge.calcIncrement(0, props.diameter),
-    };
-  }
 
   render() {
+    let labelBack, labelFront;
+    let indexFront, indexBack;
+    if (this.props.values[0] < this.props.values[1]) {
+      labelBack = "wedge2";
+      labelFront = "wedge";
+      indexFront = 0;
+      indexBack = 1;
+    } else {
+      labelBack = "wedge";
+      labelFront = "wedge2";
+      indexFront = 1;
+      indexBack = 0;
+    }
+
     return (
-      <Wedge key={this.props.index}
-             diameter={this.props.values[0] / 5 * this.state.radius}
-             i={this.props.index}
-             s="wedge"
-             angle={this.props.angle}
-             theta={this.props.theta}
-             nWedges={this.props.wedges}
-      />
+      <g>
+        <Wedge key={this.props.index}
+               diameter={this.props.values[indexBack] / 5 * this.props.radius}
+               i={this.props.index}
+               s={labelBack}
+               angle={this.props.angle}
+               theta={this.props.theta}
+               nWedges={this.props.nWedges}
+        />
+        <Wedge key={this.props.index + this.props.nWedges}
+               diameter={this.props.values[indexFront] / 5 * this.props.radius}
+               i={this.props.index}
+               s={labelFront}
+               angle={this.props.angle}
+               theta={this.props.theta}
+               nWedges={this.props.nWedges}
+        />
+      </g>
     );
   }
-
 }
 
 
@@ -133,10 +149,10 @@ class Wedge extends Component {
     let x = radius * Math.sin(this.props.theta / 2);
     let y = radius * Math.cos(this.props.theta / 2);
     return [
-        [0,0],
+      [0, 0],
       [-x, y],
       [x, y],
-        [0, 0],
+      [0, 0],
     ];
   }
 
@@ -204,24 +220,15 @@ class RadarChart extends Component {
           <VertexLine key={i} point={point} size={this.props.size} />)
         }
         { this.props.data.map((key, index)=>
-          <Wedge key={index}
-                 diameter={key.values[0] / 5 * this.state.radius}
-                 i={index}
-                 s="wedge"
-                 angle={this.state.angle}
-                 theta={this.state.theta}
-                 nWedges={this.state.wedges}
-          />
-        )}
-
-        { this.props.data.map((key, index)=>
-          <Wedge key={index}
-                 diameter={key.values[1] / 5 * this.state.radius}
-                 i={index}
-                 s="wedge2"
-                 angle={this.state.angle}
-                 theta={this.state.theta}
-                 nWedges={this.state.wedges}
+          <MultiWedge
+            key={index}
+            values={key.values}
+            radius={this.state.radius}
+            index={index}
+            s="wedge"
+            angle={this.state.angle}
+            theta={this.state.theta}
+            nWedges={this.state.nWedges}
           />
         )}
         { this.props.data.map((key, index)=>
