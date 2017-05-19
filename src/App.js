@@ -12,7 +12,7 @@ class App extends Component {
       {
         hops: hopData,
         hop1: hopData[0],
-        hop2: hopData[1],
+        hop2: null,
         activeTab: 1,
       };
 
@@ -23,13 +23,17 @@ class App extends Component {
   }
   changeSelectedHop1(i)
   {
-    if (this.state.hops[i].id === this.state.hop2.id) return;
+    if (this.state.hop2 != null && this.state.hops[i].id === this.state.hop2.id) return;
     this.setState({hop1: this.state.hops[i]});
   }
   changeSelectedHop2(i)
   {
     if (this.state.hops[i].id === this.state.hop1.id) return;
-    this.setState({hop2: this.state.hops[i]});
+    if (this.state.hop2 != null && this.state.hops[i].id === this.state.hop2.id) {
+      this.setState({hop2: null});
+    } else {
+      this.setState({hop2: this.state.hops[i]});
+    }
   }
 
   handleTabSelect(i)
@@ -42,57 +46,82 @@ class App extends Component {
     let results = [];
     results.push({
       name: "Citrus",
-      values: [this.state.hop1.characteristics.citrus, this.state.hop2.characteristics.citrus]
+      values: [this.state.hop1.characteristics.citrus]
     });
     results.push({
       name: "Tropical Fruit",
-      values: [this.state.hop1.characteristics.tropicalFruit, this.state.hop2.characteristics.tropicalFruit]
+      values: [this.state.hop1.characteristics.tropicalFruit]
     });
     results.push({
       name: "Stone Fruit",
-      values: [this.state.hop1.characteristics.stoneFruit, this.state.hop2.characteristics.stoneFruit]
+      values: [this.state.hop1.characteristics.stoneFruit]
     });
     results.push({
       name: "Apple/Pear",
-      values: [this.state.hop1.characteristics.applePear, this.state.hop2.characteristics.applePear]
+      values: [this.state.hop1.characteristics.applePear]
     });
     results.push({
       name: "Melon",
-      values: [this.state.hop1.characteristics.melon, this.state.hop2.characteristics.melon]
+      values: [this.state.hop1.characteristics.melon]
     });
     results.push({
       name: "Berry",
-      values: [this.state.hop1.characteristics.berry, this.state.hop2.characteristics.berry]
+      values: [this.state.hop1.characteristics.berry]
     });
     results.push({
       name: "Melon",
-      values: [this.state.hop1.characteristics.floral, this.state.hop2.characteristics.floral]
+      values: [this.state.hop1.characteristics.floral]
     });
     results.push({
       name: "Spicy/Herbal",
-      values: [this.state.hop1.characteristics.spicyHerbal, this.state.hop2.characteristics.spicyHerbal]
+      values: [this.state.hop1.characteristics.spicyHerbal]
     });
-    results.push({name: "Pine", values: [this.state.hop1.characteristics.pine, this.state.hop2.characteristics.pine]});
+    results.push({
+      name: "Pine",
+      values: [this.state.hop1.characteristics.pine]
+    });
     results.push({
       name: "Resinous",
-      values: [this.state.hop1.characteristics.resinous, this.state.hop2.characteristics.resinous]
+      values: [this.state.hop1.characteristics.resinous]
     });
     results.push({
       name: "Grassy",
-      values: [this.state.hop1.characteristics.grassy, this.state.hop2.characteristics.grassy]
+      values: [this.state.hop1.characteristics.grassy]
     });
     results.push({
       name: "Earthy/Woody",
-      values: [this.state.hop1.characteristics.earthyWoody, this.state.hop2.characteristics.earthyWoody]
+      values: [this.state.hop1.characteristics.earthyWoody]
     });
     results.push({
       name: "Onion/Garlic",
-      values: [this.state.hop1.characteristics.onionGarlic, this.state.hop2.characteristics.onionGarlic]
+      values: [this.state.hop1.characteristics.onionGarlic]
     });
     results.push({
       name: "Dank/Catty",
-      values: [this.state.hop1.characteristics.dankCatty, this.state.hop2.characteristics.dankCatty]
+      values: [this.state.hop1.characteristics.dankCatty]
     });
+
+    if (this.state.hop2 != null) {
+      results[0].values.push(this.state.hop2.characteristics.citrus);
+      results[1].values.push(this.state.hop2.characteristics.tropicalFruit);
+      results[2].values.push(this.state.hop2.characteristics.stoneFruit);
+      results[3].values.push(this.state.hop2.characteristics.applePear);
+      results[4].values.push(this.state.hop2.characteristics.melon);
+      results[5].values.push(this.state.hop2.characteristics.berry);
+      results[6].values.push(this.state.hop2.characteristics.floral);
+      results[7].values.push(this.state.hop2.characteristics.spicyHerbal);
+      results[8].values.push(this.state.hop2.characteristics.pine);
+      results[9].values.push(this.state.hop2.characteristics.resinous);
+      results[10].values.push(this.state.hop2.characteristics.grassy);
+      results[11].values.push(this.state.hop2.characteristics.earthyWoody);
+      results[12].values.push(this.state.hop2.characteristics.onionGarlic);
+      results[13].values.push(this.state.hop2.characteristics.dankCatty);
+    } else {
+      for (let i = 0; i < 14; i++) {
+        results[i].values.push(0);
+      }
+    }
+
     return results;
   }
 
@@ -109,11 +138,11 @@ class App extends Component {
         <div className="container-fluid">
           <div className="col-md-2 col-xs-6">
             <HopSelector hops={this.state.hops} changeSelection={this.changeSelectedHop1}
-                         selectedHopId={this.state.hop1.id} disabledHop={this.state.hop2.id} cn="hop1"/>
+                         selectedHop={this.state.hop1} disabledHop={this.state.hop2} cn="hop1"/>
           </div>
           <div className="col-md-2 col-xs-6">
             <HopSelector hops={this.state.hops} changeSelection={this.changeSelectedHop2}
-                         selectedHopId={this.state.hop2.id} disabledHop={this.state.hop1.id} cn="hop2"/>
+                         selectedHop={this.state.hop2} disabledHop={this.state.hop1} cn="hop2"/>
           </div>
 
           <div className="col-md-8 col-xs-12">
