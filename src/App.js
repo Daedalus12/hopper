@@ -13,7 +13,7 @@ class App extends Component {
         hops: hopData,
         hop1: hopData[0],
         hop2: null,
-        activeTab: 1,
+        activeTab: 2,
       };
 
     this.changeSelectedHop1 = this.changeSelectedHop1.bind(this);
@@ -152,7 +152,7 @@ class App extends Component {
             </Tab>
 
             <Tab eventKey={2} title="Basics">
-              <HopBasicInfo basics={this.state.hop1.basics}/>
+              <HopBasicInfo hop1={this.state.hop1} hop2={this.state.hop2} width={300} height={20}/>
             </Tab>
           </Tabs>
           </div>
