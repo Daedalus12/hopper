@@ -2,49 +2,65 @@ import React, {Component} from "react";
 import {BarSlider} from "./BarSlider";
 
 class HopBasicInfo extends Component {
+  getMin(field){
+    let min = 9999;
+    for (let i = 0; i < this.props.hops.length; i++ ){
+      min = Math.min(this.props.hops[i].basics[field][0], min);
+    }
+    return min;
+  }
+
+  getMax(field){
+    let max = -9999;
+    for (let i = 0; i < this.props.hops.length; i++ ){
+      max = Math.max(this.props.hops[i].basics[field][1], max);
+    }
+    return max;
+  }
+
   render() {
     return (
       <div>
         <BarSlider
           label="Alpha"
           field="alpha"
-          gmin={0}
-          gmax={18}
+          gmin={this.getMin("alpha")}
+          gmax={this.getMax("alpha")}
           hop1={this.props.hop1}
           hop2={this.props.hop2}
           width={this.props.width}
           height={this.props.height}
-        />
+        /><br/>
         <BarSlider
           label="Beta"
           field="beta"
-          gmin={0}
-          gmax={18}
+          gmin={this.getMin("beta")}
+          gmax={this.getMax("beta")}
           hop1={this.props.hop1}
           hop2={this.props.hop2}
           width={this.props.width}
           height={this.props.height}
-        />
+        /><br/>
         <BarSlider
           label="Cohumulone"
           field="cohumulone"
-          gmin={0}
-          gmax={18}
+          gmin={this.getMin("cohumulone")}
+          gmax={this.getMax("cohumulone")}
           hop1={this.props.hop1}
           hop2={this.props.hop2}
           width={this.props.width}
           height={this.props.height}
-        />
+        /><br/>
         <BarSlider
           label="Total Oil"
           field="totalOil"
-          gmin={0}
-          gmax={18}
+          gmin={this.getMin("totalOil")}
+          gmax={this.getMax("totalOil")}
           hop1={this.props.hop1}
           hop2={this.props.hop2}
           width={this.props.width}
           height={this.props.height}
-        />
+        /><br/>
       </div>
       // <p>
       //   Alpha: {this.props.basics.alpha[0]} – {this.props.basics.alpha[1]}% <br/>

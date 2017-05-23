@@ -4,7 +4,7 @@ class BarSlider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      xLeft: 40,
+      xLeft: 95,
     }
   }
 
@@ -55,6 +55,17 @@ class BarSlider extends Component {
         >
           {this.props.label}
         </text>
+
+        <text x="0" y={this.props.height / 2 + 2}
+              textAnchor="right"
+              className="radarLabel">
+          {this.props.min}
+        </text>
+
+        <rect
+            x={this.state.xLeft}
+            y="0"
+            width={this.props.width - this.state.xLeft} height={this.props.height} className="tick"/>
         <line x1={this.state.xLeft} y1={this.props.height / 2} x2={this.props.width} y2={this.props.height / 2}
               className="tick"/>
         {bars}
