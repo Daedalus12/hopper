@@ -13,7 +13,7 @@ class App extends Component {
         hops: hopData,
         hop1: hopData[0],
         hop2: null,
-        activeTab: 2,
+        activeTab: 1,
       };
 
     this.changeSelectedHop1 = this.changeSelectedHop1.bind(this);
