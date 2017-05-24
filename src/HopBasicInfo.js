@@ -18,15 +18,26 @@ class HopBasicInfo extends Component {
     return max;
   }
 
+  packageData(field) {
+    let result = {
+      gmin: this.getMin(field),
+      gmax: this.getMin(field),
+      bar1: this.props.hop1.basics[field],
+      bar2: null,
+    };
+
+    if (this.props.hop2 != null) {
+      result.bar2 = this.props.hop2.basics[field];
+    }
+    return result;
+  }
+
   render() {
     return (
       <div>
         <BarSlider
           label="Alpha"
-          gmin={this.getMin("alpha")}
-          gmax={this.getMax("alpha")}
-          min={this.props.hop1.basics.alpha[0]}
-          max={this.props.hop1.basics.alpha[1]}
+          data={this.packageData("alpha")}
           width={this.props.width}
           height={this.props.height}
         /><br/>
