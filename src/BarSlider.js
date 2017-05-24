@@ -70,15 +70,35 @@ class Bar extends Component {
     return points.join(' ');
   }
 
+  textHeight() {
+    let dy = 3;
+    if (this.props.sign < 0) {
+      return this.state.y1 - dy;
+    } else {
+      return this.state.y1 + 6 + dy;
+    }
+  }
   render() {
     if ((this.state.xLow !== this.props.xLow || this.state.xHigh !== this.props.xHigh) && !this.animate) {
       this.animate = setInterval(() => {
         this.increment();
       }, 10);
     }
-    
+    let x1 = this.props.xLeft + (this.props.xRight - this.props.xLeft) * this.state.xLow;
+    let x2 = this.props.xLeft + (this.props.xRight - this.props.xLeft) * this.state.xHigh;
+    let y = this.textHeight();
+
+
     return (
-      <polygon className={this.props.className} points={this.points()}/>
+      <g>
+        <polygon className={this.props.className} points={this.points()}/>
+        <text className="radarLabel" x={x1} y={y} textAnchor="end">
+          {this.props.sLow}
+        </text>
+        <text className="radarLabel" x={x2} y={y} textAnchor="start">
+          {this.props.sHigh}
+        </text>
+      </g>
     );
   }
 
@@ -88,16 +108,10 @@ class BarSlider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      xLeft: 95,
+      xLeft: 100,
       h1: 0.15,
     }
   }
-
-  scaleX(x) {
-    let a = (x - this.props.gmin) / (this.props.gmax - this.props.gmin);
-    return this.state.xLeft + (this.props.width - this.state.xLeft) * a;
-  }
-
 
   render() {
 
@@ -111,6 +125,8 @@ class BarSlider extends Component {
       height={this.props.height}
       sign={-1}
       className="wedge"
+      sLow={this.props.data.bar1[0]}
+      sHigh={this.props.data.bar1[1]}
     />;
 
     let bar2;
@@ -125,6 +141,8 @@ class BarSlider extends Component {
         height={this.props.height}
         sign={1}
         className="wedge2"
+        sLow={this.props.data.bar2[0]}
+        sHigh={this.props.data.bar2[1]}
       />;
     }
 

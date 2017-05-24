@@ -152,7 +152,8 @@ class App extends Component {
             </Tab>
 
             <Tab eventKey={2} title="Basics">
-              <HopBasicInfo hop1={this.state.hop1} hop2={this.state.hop2} hops={this.state.hops} width={300} height={20}/>
+              <HopBasicInfo hop1={this.state.hop1} hop2={this.state.hop2} hops={this.state.hops} width={300}
+                            height={26}/>
             </Tab>
           </Tabs>
           </div>
