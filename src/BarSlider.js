@@ -8,14 +8,55 @@ class Bar extends Component {
       y1: props.height * (0.5 + 0.15 * props.sign),
       y2: props.height * (0.5 + 0.50 * props.sign),
       dx: props.height / 8,
+      xLow: props.xLow,
+      xHigh: props.xHigh,
+      dxLow: 0,
+      dxHigh: 0,
+    };
+    this.animate = null;
+  }
+
+  static calcIncrement(d1, d2) {
+    return (d1 - d2) / 15;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      dxLow: Bar.calcIncrement(nextProps.xLow, this.props.xLow),
+      dxHigh: Bar.calcIncrement(nextProps.xHigh, this.props.xHigh),
+    });
+  }
+
+  increment() {
+    // Kill the interval if we've reached the destination
+    if (this.state.xLow === this.props.xLow && this.state.xHigh === this.props.xHigh) {
+      clearInterval(this.animate);
+      return this.animate = null;
     }
 
+    // change xLow if still needed
+    if (this.state.xLow !== this.props.xLow) {
+      if (Math.abs(this.state.xLow - this.props.xLow) < Math.abs(this.state.dxLow)) {
+        this.setState({xLow: this.props.xLow});
+      } else {
+        this.setState({xLow: this.state.xLow + this.state.dxLow});
+      }
+    }
+
+    // change xHigh if still needed
+    if (this.state.xHigh !== this.props.xHigh) {
+      if (Math.abs(this.state.xHigh - this.props.xHigh) < Math.abs(this.state.dxHigh)) {
+        this.setState({xHigh: this.props.xHigh});
+      } else {
+        this.setState({xHigh: this.state.xHigh + this.state.dxHigh});
+      }
+    }
   }
 
   points() {
     let points = [];
-    let x1 = this.props.xLeft + (this.props.xRight - this.props.xLeft) * this.props.xLow;
-    let x2 = this.props.xLeft + (this.props.xRight - this.props.xLeft) * this.props.xHigh;
+    let x1 = this.props.xLeft + (this.props.xRight - this.props.xLeft) * this.state.xLow;
+    let x2 = this.props.xLeft + (this.props.xRight - this.props.xLeft) * this.state.xHigh;
 
     points.push([this.props.xLeft, this.state.y0]);
     points.push([this.props.xLeft, this.state.y1]);
@@ -30,6 +71,12 @@ class Bar extends Component {
   }
 
   render() {
+    if ((this.state.xLow !== this.props.xLow || this.state.xHigh !== this.props.xHigh) && !this.animate) {
+      this.animate = setInterval(() => {
+        this.increment();
+      }, 10);
+    }
+    
     return (
       <polygon className={this.props.className} points={this.points()}/>
     );
