@@ -89,27 +89,44 @@ class BarSlider extends Component {
     super(props);
     this.state = {
       xLeft: 95,
+      h1: 0.15,
     }
   }
 
+  scaleX(x) {
+    let a = (x - this.props.gmin) / (this.props.gmax - this.props.gmin);
+    return this.state.xLeft + (this.props.width - this.state.xLeft) * a;
+  }
+
+
   render() {
+
+    let scale = this.props.data.gmax - this.props.data.gmin;
 
     let bar1 = <Bar
       xLeft={this.state.xLeft}
       xRight={this.props.width}
-      xLow={(this.props.min - this.props.gmin) / (this.props.gmax - this.props.gmin)}
-      xHigh={(this.props.max - this.props.gmin) / (this.props.gmax - this.props.gmin)}
+      xLow={(this.props.data.bar1[0]- this.props.data.gmin) / scale}
+      xHigh={(this.props.data.bar1[1] - this.props.data.gmin) / scale}
       height={this.props.height}
       sign={-1}
       className="wedge"
     />;
 
-    let bar2 = <; >;
+    let bar2;
 
-  if (this.props.data.bar2 === null)
-  {
-
-  }
+    if (this.props.data.bar2 !== null)
+    {
+      bar2 = <Bar
+        xLeft={this.state.xLeft}
+        xRight={this.props.width}
+        xLow={(this.props.data.bar2[0]- this.props.data.gmin) / scale}
+        xHigh={(this.props.data.bar2[1] - this.props.data.gmin) / scale}
+        height={this.props.height}
+        sign={1}
+        className="wedge2"
+      />;
+    }
 
     return (
       <svg
@@ -132,14 +149,11 @@ class BarSlider extends Component {
         {/*{this.props.min}*/}
         {/*</text>*/}
 
-        <rect
-          x={this.state.xLeft}
-          y="0"
-          width={this.props.width - this.state.xLeft} height={this.props.height} className="tick"/>
         <line x1={this.state.xLeft} y1={this.props.height / 2} x2={this.props.width} y2={this.props.height / 2}
               className="tick"/>
-        {bars}
-      </svg>;
+        {bar1}
+        {bar2}
+      </svg>
     );
   }
 }
