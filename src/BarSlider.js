@@ -53,18 +53,22 @@ class Bar extends Component {
     }
   }
 
+  scaleX(r) {
+    return this.props.xLeft + this.state.dx + r * (this.props.xRight - this.props.xLeft - this.state.dx * 2);
+  }
+
   points() {
     let points = [];
-    let x1 = this.props.xLeft + (this.props.xRight - this.props.xLeft) * this.state.xLow;
-    let x2 = this.props.xLeft + (this.props.xRight - this.props.xLeft) * this.state.xHigh;
+    let x1 = this.scaleX(this.state.xLow);
+    let x2 = this.scaleX(this.state.xHigh);
 
     points.push([this.props.xLeft, this.state.y0]);
     points.push([this.props.xLeft, this.state.y1]);
-    points.push([x1, this.state.y1]);
-    points.push([x1 + this.state.dx, this.state.y2]);
-    points.push([x2 - this.state.dx, this.state.y2]);
-    points.push([x2, this.state.y1]);
-    points.push([x2, this.state.y0]);
+    points.push([x1 - this.state.dx, this.state.y1]);
+    points.push([x1, this.state.y2]);
+    points.push([x2, this.state.y2]);
+    points.push([x2 + this.state.dx, this.state.y1]);
+    points.push([x2 + this.state.dx, this.state.y0]);
     points.push([this.props.xLeft, this.state.y0]);
 
     return points.join(' ');
@@ -84,10 +88,9 @@ class Bar extends Component {
         this.increment();
       }, 10);
     }
-    let x1 = this.props.xLeft + (this.props.xRight - this.props.xLeft) * this.state.xLow;
-    let x2 = this.props.xLeft + (this.props.xRight - this.props.xLeft) * this.state.xHigh;
+    let x1 = this.scaleX(this.state.xLow) - 3;
+    let x2 = this.scaleX(this.state.xHigh) + 3;
     let y = this.textHeight();
-
 
     return (
       <g>
