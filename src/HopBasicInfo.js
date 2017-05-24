@@ -23,44 +23,43 @@ class HopBasicInfo extends Component {
       <div>
         <BarSlider
           label="Alpha"
-          field="alpha"
           gmin={this.getMin("alpha")}
           gmax={this.getMax("alpha")}
-          hop1={this.props.hop1}
-          hop2={this.props.hop2}
+          min={this.props.hop1.basics.alpha[0]}
+          max={this.props.hop1.basics.alpha[1]}
           width={this.props.width}
           height={this.props.height}
         /><br/>
-        <BarSlider
-          label="Beta"
-          field="beta"
-          gmin={this.getMin("beta")}
-          gmax={this.getMax("beta")}
-          hop1={this.props.hop1}
-          hop2={this.props.hop2}
-          width={this.props.width}
-          height={this.props.height}
-        /><br/>
-        <BarSlider
-          label="Cohumulone"
-          field="cohumulone"
-          gmin={this.getMin("cohumulone")}
-          gmax={this.getMax("cohumulone")}
-          hop1={this.props.hop1}
-          hop2={this.props.hop2}
-          width={this.props.width}
-          height={this.props.height}
-        /><br/>
-        <BarSlider
-          label="Total Oil"
-          field="totalOil"
-          gmin={this.getMin("totalOil")}
-          gmax={this.getMax("totalOil")}
-          hop1={this.props.hop1}
-          hop2={this.props.hop2}
-          width={this.props.width}
-          height={this.props.height}
-        /><br/>
+        {/*<BarSlider*/}
+        {/*label="Beta"*/}
+        {/*field="beta"*/}
+        {/*gmin={this.getMin("beta")}*/}
+        {/*gmax={this.getMax("beta")}*/}
+        {/*hop1={this.props.hop1}*/}
+        {/*hop2={this.props.hop2}*/}
+        {/*width={this.props.width}*/}
+        {/*height={this.props.height}*/}
+        {/*/><br/>*/}
+        {/*<BarSlider*/}
+        {/*label="Cohumulone"*/}
+        {/*field="cohumulone"*/}
+        {/*gmin={this.getMin("cohumulone")}*/}
+        {/*gmax={this.getMax("cohumulone")}*/}
+        {/*hop1={this.props.hop1}*/}
+        {/*hop2={this.props.hop2}*/}
+        {/*width={this.props.width}*/}
+        {/*height={this.props.height}*/}
+        {/*/><br/>*/}
+        {/*<BarSlider*/}
+        {/*label="Total Oil"*/}
+        {/*field="totalOil"*/}
+        {/*gmin={this.getMin("totalOil")}*/}
+        {/*gmax={this.getMax("totalOil")}*/}
+        {/*hop1={this.props.hop1}*/}
+        {/*hop2={this.props.hop2}*/}
+        {/*width={this.props.width}*/}
+        {/*height={this.props.height}*/}
+        {/*/><br/>*/}
       </div>
       // <p>
       //   Alpha: {this.props.basics.alpha[0]} – {this.props.basics.alpha[1]}% <br/>
