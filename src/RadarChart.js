@@ -140,6 +140,14 @@ class RadarChart extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      radius: (nextProps.size / 2) - 20,
+      nWedges: nextProps.data.length,
+      theta: (Math.PI * 2) / nextProps.data.length,
+    });
+  }
+
   calcPoints(radius) {
     const points = [];
 
