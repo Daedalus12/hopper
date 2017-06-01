@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import {SizeAware} from './SizeAware';
+import * as ReactDOM from "react-dom";
 
 class Label extends Component {
 
@@ -13,12 +15,12 @@ class Label extends Component {
 
   render() {
     return(
-        <text transform={this.getTransformString()}
-              textAnchor="middle"
-              className="radarLabel"
-        >
-          {this.props.text}
-        </text>
+      <text transform={this.getTransformString()}
+            textAnchor="middle"
+            className="radarLabel"
+      >
+        {this.props.text}
+      </text>
     )
   }
 
@@ -133,16 +135,26 @@ class RadarChart extends Component {
     super(props);
     this.state = {
       ticks: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
-      radius: (props.size/2) - 20,
       nWedges: props.data.length,
       theta: (Math.PI * 2) / props.data.length,
       angle: -Math.PI / 2,
-    }
+      size: 300,
+      radius: (300/2) - 20,
+    };
+    this.updateWidthHeight = this.updateWidthHeight.bind(this);
+  }
+
+  updateWidthHeight(width){
+    let size = Math.min(600, Math.max(300, width));
+
+    this.setState({
+      size: size,
+      radius: (size/2) - 20,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      radius: (nextProps.size / 2) - 20,
       nWedges: nextProps.data.length,
       theta: (Math.PI * 2) / nextProps.data.length,
     });
@@ -151,7 +163,7 @@ class RadarChart extends Component {
   calcPoints(radius) {
     const points = [];
 
-    for (let i = 0; i < this.state.nWedges + 1; i++) {
+    for (let i = 0; i < this.props.data.length + 1; i++) {
       let x = radius * Math.cos(this.state.theta * (i + 0.5) + this.state.angle);
       let y = radius * Math.sin(this.state.theta * (i + 0.5) + this.state.angle);
       points.push([x, y]);
@@ -159,55 +171,61 @@ class RadarChart extends Component {
     return points;
   }
 
-  render(){
+  componentDidUpdate(){
+    this.setState({
+      size: ReactDOM.findDOMNode(this).width,
+    });
+  }
 
+
+  render(){
     let tickPoints = [];
 
     for (let i=0; i < this.state.ticks.length; ++i)
     {
-      tickPoints.push(this.calcPoints(this.state.ticks[i] / 5.0 * this.state.radius, this.props.size));
+      tickPoints.push(this.calcPoints(this.state.ticks[i] / 5.0 * this.state.radius, this.state.size));
     }
 
     let outerPoints = tickPoints[tickPoints.length - 1];
 
     return (
       <svg
-          width={this.props.size}
-          height={this.props.size}
+          width={this.state.size}
+          height={this.state.size}
           className='Chart'
-          viewBox={"-" + this.props.size/2 + " -" + this.props.size/2 + " " + this.props.size + " " + this.props.size}
+          viewBox={"-" + this.state.size/2 + " -" + this.state.size/2 + " " + this.state.size + " " + this.state.size}
           xmlns='http://www.w3.org/2000/svg'
       >
 
         {tickPoints.map((points, index)=> <Axes key={index} points={points} class="tick"/>)}
 
         { outerPoints.map((point, i) =>
-          <VertexLine key={i} point={point} size={this.props.size} />)
+            <VertexLine key={i} point={point} size={this.state.size} />)
         }
         { this.props.data.map((key, index)=>
-          <Wedge key={index}
-                 diameter={key.values[0] / 5 * this.state.radius}
-                 i={index}
-                 s="wedge"
-                 angle={this.state.angle}
-                 theta={this.state.theta}
-                 nWedges={this.state.nWedges}
-                 width={1}
-          />
+            <Wedge key={index}
+                   diameter={key.values[0] / 5 * this.state.radius}
+                   i={index}
+                   s="wedge"
+                   angle={this.state.angle}
+                   theta={this.state.theta}
+                   nWedges={this.state.nWedges}
+                   width={1}
+            />
         )}
         { this.props.data.map((key, index)=>
-          <Wedge key={index}
-                 diameter={key.values[1] / 5 * this.state.radius}
-                 i={index}
-                 s="wedge2"
-                 angle={this.state.angle}
-                 theta={this.state.theta}
-                 nWedges={this.state.nWedges}
-                 width={0.5}
-          />
+            <Wedge key={index}
+                   diameter={key.values[1] / 5 * this.state.radius}
+                   i={index}
+                   s="wedge2"
+                   angle={this.state.angle}
+                   theta={this.state.theta}
+                   nWedges={this.state.nWedges}
+                   width={0.5}
+            />
         )}
         { this.props.data.map((key, index)=>
-          <Label text={key.name} radius={this.state.radius} i={index} nWedges={this.state.nWedges} key={index}/>)
+            <Label text={key.name} radius={this.state.radius} i={index} nWedges={this.state.nWedges} key={index}/>)
         }
 
       </svg>

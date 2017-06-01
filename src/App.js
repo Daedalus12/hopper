@@ -13,16 +13,13 @@ class App extends Component {
         hops: hopData,
         hop1: hopData[0],
         hop2: null,
-        activeTab: 1,
-        width: 300,
-        height: 300,
+        activeTab: 2,
       };
 
     this.changeSelectedHop1 = this.changeSelectedHop1.bind(this);
     this.changeSelectedHop2 = this.changeSelectedHop2.bind(this);
     this.handleTabSelect = this.handleTabSelect.bind(this);
     this.packData = this.packData.bind(this);
-    this.updateDimensions = this.updateDimensions.bind(this);
   }
   changeSelectedHop1(i)
   {
@@ -128,20 +125,7 @@ class App extends Component {
     return results;
   }
 
-  updateDimensions(){
-    this.setState({
-      width: document.getElementById('display-area').clientWidth,
-      height: document.getElementById('display-area').clientHeight,
-    });
-  }
-
-  componentDidMount() {
-    this.updateDimensions();
-    window.addEventListener("resize", this.updateDimensions);
-  }
-
   render() {
-    let size = Math.max(300, Math.min(this.state.width, 600));
     return (
       <div className="App">
         <div className="page-header">
@@ -163,16 +147,12 @@ class App extends Component {
           <div className="col-md-8 col-xs-12">
             <Tabs activeKey={this.state.activeTab} onSelect={this.handleTabSelect} id="Visualization Selector">
               <Tab eventKey={1} title="Aroma">
-                <div id="display-area">
-                  <RadarChart size={size} data={this.packData()}/>
-                </div>
+                <RadarChart data={this.packData()}/>
               </Tab>
 
               <Tab eventKey={2} title="Basics">
-                <div id="display-area">
-                  <HopBasicInfo hop1={this.state.hop1} hop2={this.state.hop2} hops={this.state.hops} width={this.state.width}
-                                height={26}/>
-                </div>
+                <HopBasicInfo hop1={this.state.hop1} hop2={this.state.hop2} hops={this.state.hops} width={300}
+                              height={26}/>
               </Tab>
             </Tabs>
           </div>

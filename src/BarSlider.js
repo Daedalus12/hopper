@@ -113,23 +113,24 @@ class BarSlider extends Component {
     this.state = {
       xLeft: 100,
       h1: 0.15,
+      width: 400,
     }
   }
 
-  render() {
 
+  render(){
     let scale = this.props.data.gmax - this.props.data.gmin;
 
     let bar1 = <Bar
-      xLeft={this.state.xLeft}
-      xRight={this.props.width}
-      xLow={(this.props.data.bar1[0]- this.props.data.gmin) / scale}
-      xHigh={(this.props.data.bar1[1] - this.props.data.gmin) / scale}
-      height={this.props.height}
-      sign={-1}
-      className="wedge"
-      sLow={this.props.data.bar1[0]}
-      sHigh={this.props.data.bar1[1]}
+        xLeft={this.state.xLeft}
+        xRight={this.props.width}
+        xLow={(this.props.data.bar1[0]- this.props.data.gmin) / scale}
+        xHigh={(this.props.data.bar1[1] - this.props.data.gmin) / scale}
+        height={this.props.height}
+        sign={-1}
+        className="wedge"
+        sLow={this.props.data.bar1[0]}
+        sHigh={this.props.data.bar1[1]}
     />;
 
     let bar2;
@@ -137,25 +138,25 @@ class BarSlider extends Component {
     if (this.props.data.bar2 !== null)
     {
       bar2 = <Bar
-        xLeft={this.state.xLeft}
-        xRight={this.props.width}
-        xLow={(this.props.data.bar2[0]- this.props.data.gmin) / scale}
-        xHigh={(this.props.data.bar2[1] - this.props.data.gmin) / scale}
-        height={this.props.height}
-        sign={1}
-        className="wedge2"
-        sLow={this.props.data.bar2[0]}
-        sHigh={this.props.data.bar2[1]}
+          xLeft={this.state.xLeft}
+          xRight={this.props.width}
+          xLow={(this.props.data.bar2[0]- this.props.data.gmin) / scale}
+          xHigh={(this.props.data.bar2[1] - this.props.data.gmin) / scale}
+          height={this.props.height}
+          sign={1}
+          className="wedge2"
+          sLow={this.props.data.bar2[0]}
+          sHigh={this.props.data.bar2[1]}
       />;
     }
 
     return (
       <svg
-        width={this.props.width}
-        height={this.props.height}
-        className='BarChart'
-        viewBox={"-1 -1 " + (this.props.width + 2) + " " + (this.props.height + 2)}
-        xmlns='http://www.w3.org/2000/svg'
+          width={this.props.width}
+          height={this.props.height}
+          className='BarChart'
+          viewBox={"-1 -1 " + (this.props.width + 2) + " " + (this.props.height + 2)}
+          xmlns='http://www.w3.org/2000/svg'
       >
         <text x="0" y={this.props.height / 2 + 2}
               textAnchor="left"
@@ -163,12 +164,6 @@ class BarSlider extends Component {
         >
           {this.props.label}
         </text>
-
-        {/*<text x="0" y={this.props.height / 2 + 2}*/}
-        {/*textAnchor="right"*/}
-        {/*className="radarLabel">*/}
-        {/*{this.props.min}*/}
-        {/*</text>*/}
 
         <line x1={this.state.xLeft} y1={this.props.height / 2} x2={this.props.width} y2={this.props.height / 2}
               className="tick"/>
