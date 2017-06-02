@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {BarSlider} from "./BarSlider";
-import {SizeAware} from './SizeAware';
+import sizeMe from "react-sizeme";
 
 class HopBasicInfo extends Component {
   constructor(){
@@ -8,7 +8,6 @@ class HopBasicInfo extends Component {
     this.state = {
       width: 400,
     };
-    this.updateWidthHeight = this.updateWidthHeight.bind(this);
   }
 
   getMin(field){
@@ -45,65 +44,60 @@ class HopBasicInfo extends Component {
     return result;
   }
 
-  updateWidthHeight(width, height){
-    let size = Math.min(600, Math.max(300, width));
-
-    this.setState({
-      width: size,
-    });
-  }
-
   render() {
+    const size = this.props.size;
+    const width = Math.min(600, Math.max(300, size.width));
+
     return (
-      <SizeAware callback={this.updateWidthHeight}>
+      <div>
         <BarSlider
-            label="Alpha" data={this.packageData("alpha")}
-            width={this.state.width} height={this.props.height}/>
+          label="Alpha" data={this.packageData("alpha")}
+          width={width} height={this.props.height}/>
         <br/>
         <BarSlider
-            label="Beta" data={this.packageData("beta")}
-            width={this.state.width} height={this.props.height}/>
+          label="Beta" data={this.packageData("beta")}
+          width={width} height={this.props.height}/>
         <br/>
         <BarSlider
-            label="Cohumulone" data={this.packageData("cohumulone")}
-            width={this.state.width} height={this.props.height}/>
+          label="Cohumulone" data={this.packageData("cohumulone")}
+          width={width} height={this.props.height}/>
         <br/>
         <BarSlider
-            label="Total Oil" data={this.packageData("totalOil")}
-            width={this.state.width} height={this.props.height}/>
+          label="Total Oil" data={this.packageData("totalOil")}
+          width={width} height={this.props.height}/>
         <br/>
         <BarSlider
-            label="Myrcene" data={this.packageData("myrcene")}
-            width={this.state.width} height={this.props.height}/>
+          label="Myrcene" data={this.packageData("myrcene")}
+          width={width} height={this.props.height}/>
         <br/>
         <BarSlider
-            label="Humulene" data={this.packageData("humulene")}
-            width={this.state.width} height={this.props.height}/>
+          label="Humulene" data={this.packageData("humulene")}
+          width={width} height={this.props.height}/>
         <br/>
         <BarSlider
-            label="Caryophyllene" data={this.packageData("caryophyllene")}
-            width={this.state.width} height={this.props.height}/>
+          label="Caryophyllene" data={this.packageData("caryophyllene")}
+          width={width} height={this.props.height}/>
         <br/>
         <BarSlider
-            label="Farnesene" data={this.packageData("farnesene")}
-            width={this.state.width} height={this.props.height}/>
+          label="Farnesene" data={this.packageData("farnesene")}
+          width={width} height={this.props.height}/>
         <br/>
         <BarSlider
-            label="Linalool" data={this.packageData("linalool")}
-            width={this.state.width} height={this.props.height}/>
+          label="Linalool" data={this.packageData("linalool")}
+          width={width} height={this.props.height}/>
         <br/>
         <BarSlider
-            label="Geraniol" data={this.packageData("geraniol")}
-            width={this.state.width} height={this.props.height}/>
+          label="Geraniol" data={this.packageData("geraniol")}
+          width={width} height={this.props.height}/>
         <br/>
         <BarSlider
-            label="ß-Pinene" data={this.packageData("betaPinene")}
-            width={this.state.width} height={this.props.height}/>
+          label="ß-Pinene" data={this.packageData("betaPinene")}
+          width={width} height={this.props.height}/>
         {/*<br/>*/}
         {/*Parentage: {this.props.hop1.basics.parentage === null ? "" : this.props.hop1.basics.parentage}<br/>*/}
-      </SizeAware>
+      </div>
     );
   }
 }
 
-export {HopBasicInfo};
+export default sizeMe({})(HopBasicInfo);

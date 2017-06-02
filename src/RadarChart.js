@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import {SizeAware} from './SizeAware';
-import * as ReactDOM from "react-dom";
+import sizeMe from "react-sizeme";
 
 class Label extends Component {
 
@@ -135,28 +134,16 @@ class RadarChart extends Component {
     super(props);
     this.state = {
       ticks: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
-      nWedges: props.data.length,
-      theta: (Math.PI * 2) / props.data.length,
       angle: -Math.PI / 2,
-      size: 300,
-      radius: (300/2) - 20,
+      theta: (Math.PI * 2) / props.data.length,
+      nWedges: props.data.length,
     };
-    this.updateWidthHeight = this.updateWidthHeight.bind(this);
-  }
-
-  updateWidthHeight(width){
-    let size = Math.min(600, Math.max(300, width));
-
-    this.setState({
-      size: size,
-      radius: (size/2) - 20,
-    });
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      nWedges: nextProps.data.length,
       theta: (Math.PI * 2) / nextProps.data.length,
+      nWedges: nextProps.data.length,
     });
   }
 
@@ -171,40 +158,38 @@ class RadarChart extends Component {
     return points;
   }
 
-  componentDidUpdate(){
-    this.setState({
-      size: ReactDOM.findDOMNode(this).width,
-    });
-  }
-
-
   render(){
+    const size = Math.min(600, Math.max(300, this.props.size.width));
+    const radius = (size / 2) - 20;
+    console.log("RadarChart: render");
+
     let tickPoints = [];
 
     for (let i=0; i < this.state.ticks.length; ++i)
     {
-      tickPoints.push(this.calcPoints(this.state.ticks[i] / 5.0 * this.state.radius, this.state.size));
+      tickPoints.push(this.calcPoints(this.state.ticks[i] / 5.0 * radius, size));
     }
 
     let outerPoints = tickPoints[tickPoints.length - 1];
 
     return (
-      <svg
-          width={this.state.size}
-          height={this.state.size}
+      <div>
+        <svg
+          width={size}
+          height={size}
           className='Chart'
-          viewBox={"-" + this.state.size/2 + " -" + this.state.size/2 + " " + this.state.size + " " + this.state.size}
+          viewBox={"-" + size / 2 + " -" + size / 2 + " " + size + " " + size}
           xmlns='http://www.w3.org/2000/svg'
-      >
+        >
 
-        {tickPoints.map((points, index)=> <Axes key={index} points={points} class="tick"/>)}
+          {tickPoints.map((points, index)=> <Axes key={index} points={points} class="tick"/>)}
 
-        { outerPoints.map((point, i) =>
-            <VertexLine key={i} point={point} size={this.state.size} />)
-        }
-        { this.props.data.map((key, index)=>
+          { outerPoints.map((point, i) =>
+            <VertexLine key={i} point={point} size={size}/>)
+          }
+          { this.props.data.map((key, index)=>
             <Wedge key={index}
-                   diameter={key.values[0] / 5 * this.state.radius}
+                   diameter={key.values[0] / 5 * radius}
                    i={index}
                    s="wedge"
                    angle={this.state.angle}
@@ -212,10 +197,10 @@ class RadarChart extends Component {
                    nWedges={this.state.nWedges}
                    width={1}
             />
-        )}
-        { this.props.data.map((key, index)=>
+          )}
+          { this.props.data.map((key, index)=>
             <Wedge key={index}
-                   diameter={key.values[1] / 5 * this.state.radius}
+                   diameter={key.values[1] / 5 * radius}
                    i={index}
                    s="wedge2"
                    angle={this.state.angle}
@@ -223,14 +208,17 @@ class RadarChart extends Component {
                    nWedges={this.state.nWedges}
                    width={0.5}
             />
-        )}
-        { this.props.data.map((key, index)=>
-            <Label text={key.name} radius={this.state.radius} i={index} nWedges={this.state.nWedges} key={index}/>)
-        }
+          )}
+          { this.props.data.map((key, index)=>
+            <Label text={key.name} radius={radius} i={index} nWedges={this.state.nWedges} key={index}/>)
+          }
 
-      </svg>
+        </svg>
+      </div>
     );
+
   }
 }
 
-export {RadarChart};
+
+export default sizeMe({})(RadarChart);

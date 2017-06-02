@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import {HopSelector} from "./HopSelector";
 import {hopData} from "./HopData";
-import {RadarChart} from "./RadarChart";
-import {HopBasicInfo} from "./HopBasicInfo";
+import RadarChart from "./RadarChart";
+import HopBasicInfo from "./HopBasicInfo";
 import {Tab, Tabs} from "react-bootstrap";
+
 
 class App extends Component {
   constructor(){
@@ -156,9 +157,6 @@ class App extends Component {
               </Tab>
             </Tabs>
           </div>
-
-
-
 
         </div>
       </div>
