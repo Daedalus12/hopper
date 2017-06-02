@@ -88,9 +88,15 @@ class Bar extends Component {
         this.increment();
       }, 10);
     }
+
+    if (this.state.xHigh === 0) {
+      return null;
+    }
+
     let x1 = this.scaleX(this.state.xLow) - 3;
     let x2 = this.scaleX(this.state.xHigh) + 3;
     let y = this.textHeight();
+
 
     return (
       <g>
@@ -119,35 +125,29 @@ class BarSlider extends Component {
 
 
   render(){
-    let scale = this.props.data.gmax - this.props.data.gmin;
+    const scale = this.props.data.gmax - this.props.data.gmin;
+    let bar1MinVal = 0;
+    let bar1MaxVal = 0;
+    let bar1MinText = "";
+    let bar1MaxText = "";
 
-    let bar1 = <Bar
-        xLeft={this.state.xLeft}
-        xRight={this.props.width}
-        xLow={(this.props.data.bar1[0]- this.props.data.gmin) / scale}
-        xHigh={(this.props.data.bar1[1] - this.props.data.gmin) / scale}
-        height={this.props.height}
-        sign={-1}
-        className="wedge"
-        sLow={this.props.data.bar1[0]}
-        sHigh={this.props.data.bar1[1]}
-    />;
-
-    let bar2;
+    let bar2MinVal = 0;
+    let bar2MaxVal = 0;
+    let bar2MinText = "";
+    let bar2MaxText = "";
+    if (this.props.data.bar1 !== null) {
+      bar1MinVal = (this.props.data.bar1[0] - this.props.data.gmin) / scale;
+      bar1MaxVal = (this.props.data.bar1[1] - this.props.data.gmin) / scale;
+      bar1MinText = this.props.data.bar1[0];
+      bar1MaxText = this.props.data.bar1[1];
+    }
 
     if (this.props.data.bar2 !== null)
     {
-      bar2 = <Bar
-          xLeft={this.state.xLeft}
-          xRight={this.props.width}
-          xLow={(this.props.data.bar2[0]- this.props.data.gmin) / scale}
-          xHigh={(this.props.data.bar2[1] - this.props.data.gmin) / scale}
-          height={this.props.height}
-          sign={1}
-          className="wedge2"
-          sLow={this.props.data.bar2[0]}
-          sHigh={this.props.data.bar2[1]}
-      />;
+      bar2MinVal = (this.props.data.bar2[0] - this.props.data.gmin) / scale;
+      bar2MaxVal = (this.props.data.bar2[1] - this.props.data.gmin) / scale;
+      bar2MinText = this.props.data.bar2[0];
+      bar2MaxText = this.props.data.bar2[1];
     }
 
     return (
@@ -167,8 +167,28 @@ class BarSlider extends Component {
 
         <line x1={this.state.xLeft} y1={this.props.height / 2} x2={this.props.width} y2={this.props.height / 2}
               className="tick"/>
-        {bar1}
-        {bar2}
+        <Bar
+          xLeft={this.state.xLeft}
+          xRight={this.props.width}
+          xLow={bar1MinVal}
+          xHigh={bar1MaxVal}
+          height={this.props.height}
+          sign={-1}
+          className="wedge"
+          sLow={bar1MinText}
+          sHigh={bar1MaxText}
+        />;
+        <Bar
+          xLeft={this.state.xLeft}
+          xRight={this.props.width}
+          xLow={bar2MinVal}
+          xHigh={bar2MaxVal}
+          height={this.props.height}
+          sign={1}
+          className="wedge2"
+          sLow={bar2MinText}
+          sHigh={bar2MaxText}
+        />;
       </svg>
     );
   }
