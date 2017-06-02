@@ -100,4 +100,4 @@ class HopBasicInfo extends Component {
   }
 }
 
-export default sizeMe({})(HopBasicInfo);
+export default sizeMe({refreshRate: 16, refreshMode: 'debounce'})(HopBasicInfo);

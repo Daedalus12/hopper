@@ -221,4 +221,4 @@ class RadarChart extends Component {
 }
 
 
-export default sizeMe({})(RadarChart);
+export default sizeMe({refreshRate: 16, refreshMode: 'debounce'})(RadarChart);
